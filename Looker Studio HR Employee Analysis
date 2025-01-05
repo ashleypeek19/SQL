@@ -1,0 +1,312 @@
+-- Employee Dataset -- 
+
+-- combine first and last name for full employee name
+
+select
+  concat(FirstName, ' ', LastName) as Employee_Name
+from
+  `Data.EmployeeDataset`
+
+-- age bins for better data analysis (age 15-51) 
+
+SELECT
+  age
+  , CASE
+      WHEN Age BETWEEN 15 AND 21 THEN '15-21'
+      WHEN Age BETWEEN 22 AND 28 THEN '22-28'
+      WHEN Age BETWEEN 29 AND 35 THEN '29-35'
+      WHEN Age BETWEEN 36 AND 42 THEN '36-42'
+      WHEN Age BETWEEN 43 AND 51 THEN '43-51'
+      ELSE 'Other' 
+  END AS age_bin
+FROM
+  `Data.EmployeeDataset`
+;
+
+-- create state full name
+select
+  case 
+    when State = 'CA' then 'California'
+    when State = 'IL' then 'Illinois'
+    when State = 'NY' then 'New York'
+    end as state_name
+from
+  `Data.EmployeeDataset`
+
+-- salary bins for better data analysis (20837 - 547204)
+
+select
+  EmployeeID
+  , Salary
+  , CASE
+      WHEN Salary BETWEEN 20837 AND 50000 THEN 'Under 50K'
+      WHEN Salary BETWEEN 50001 AND 150000 THEN '50K-150K'
+      WHEN Salary BETWEEN 150001 AND 300000 THEN '150K-300K'
+      WHEN Salary BETWEEN 300001 AND 500000 THEN '300K-500K'
+      WHEN Salary > 500000 THEN 'Over 500K'
+      ELSE 'Unknown'
+    END AS salary_bin
+FROM
+  `Data.EmployeeDataset`
+;
+
+-- combine different case statement queries to develop full table of employee demographics
+
+select
+  employeeid
+  , concat(FirstName, ' ', LastName) as Employee_Name
+  , Gender
+  , BusinessTravel
+  , Department
+  , `DistanceFromHome KM`
+  , Ethnicity
+  , Education
+  , EducationField
+  , JobRole
+  , MaritalStatus
+  , StockOptionLevel
+  , OverTime
+  , HireDate
+  , Attrition
+  , YearsAtCompany
+  , YearsInMostRecentRole
+  , YearsSinceLastPromotion
+  , YearsWithCurrManager
+  , age 
+  , CASE
+      WHEN Age BETWEEN 15 AND 21 THEN '15-21'
+      WHEN Age BETWEEN 22 AND 28 THEN '22-28'
+      WHEN Age BETWEEN 29 AND 35 THEN '29-35'
+      WHEN Age BETWEEN 36 AND 42 THEN '36-42'
+      WHEN Age BETWEEN 43 AND 51 THEN '43-51'
+      ELSE 'Other' 
+      END AS age_bin
+  , case 
+      when State = 'CA' then 'California'
+      when State = 'IL' then 'Illinois'
+      when State = 'NY' then 'New York'
+      end as state_name
+  , CASE
+      WHEN Salary BETWEEN 20837 AND 50000 THEN 'Under 50K'
+      WHEN Salary BETWEEN 50001 AND 150000 THEN '50K-150K'
+      WHEN Salary BETWEEN 150001 AND 300000 THEN '150K-300K'
+      WHEN Salary BETWEEN 300001 AND 500000 THEN '300K-500K'
+      WHEN Salary > 500000 THEN 'Over 500K'
+      ELSE 'Unknown'
+      END AS salary_bin
+FROM
+  `Data.EmployeeDataset`
+;
+
+-- Create Table 1 by joining employee table with education table based on primary key as Education and EducationLevelID
+
+create table `Data.Table1` as 
+select
+  employeeid
+  , concat(FirstName, ' ', LastName) as Employee_Name
+  , Gender
+  , BusinessTravel
+  , Department
+  , `DistanceFromHome KM`
+  , Ethnicity
+  , Education
+  , EducationField
+  , JobRole
+  , MaritalStatus
+  , StockOptionLevel
+  , OverTime
+  , HireDate
+  , Attrition
+  , YearsAtCompany
+  , YearsInMostRecentRole
+  , YearsSinceLastPromotion
+  , YearsWithCurrManager
+  , age 
+  , CASE
+      WHEN Age BETWEEN 15 AND 21 THEN '15-21'
+      WHEN Age BETWEEN 22 AND 28 THEN '22-28'
+      WHEN Age BETWEEN 29 AND 35 THEN '29-35'
+      WHEN Age BETWEEN 36 AND 42 THEN '36-42'
+      WHEN Age BETWEEN 43 AND 51 THEN '43-51'
+      ELSE 'Other' 
+      END AS age_bin
+  , case 
+      when State = 'CA' then 'California'
+      when State = 'IL' then 'Illinois'
+      when State = 'NY' then 'New York'
+      end as state_name
+  , CASE
+      WHEN Salary BETWEEN 20837 AND 50000 THEN 'Under 50K'
+      WHEN Salary BETWEEN 50001 AND 150000 THEN '50K-150K'
+      WHEN Salary BETWEEN 150001 AND 300000 THEN '150K-300K'
+      WHEN Salary BETWEEN 300001 AND 500000 THEN '300K-500K'
+      WHEN Salary > 500000 THEN 'Over 500K'
+      ELSE 'Unknown'
+      END AS salary_bin
+  , EL.EducationLevel as Education_Standard
+FROM 
+  `Data.EmployeeDataset` E
+    join `Data.EducationLevel` EL
+      on E.Education = EL.EducationLevelID
+;
+
+create table `Data.Table3` as 
+select
+  employeeid
+  , concat(FirstName, ' ', LastName) as Employee_Name
+  , Gender
+  , BusinessTravel
+  , Department
+  , `DistanceFromHome KM`
+  , Ethnicity
+  , Education
+  , EducationField
+  , JobRole
+  , MaritalStatus
+  , StockOptionLevel
+  , OverTime
+  , HireDate
+  , Attrition
+  , YearsAtCompany
+  , YearsInMostRecentRole
+  , YearsSinceLastPromotion
+  , YearsWithCurrManager
+  , age 
+  , CASE
+      WHEN Age BETWEEN 15 AND 21 THEN '15-21'
+      WHEN Age BETWEEN 22 AND 28 THEN '22-28'
+      WHEN Age BETWEEN 29 AND 35 THEN '29-35'
+      WHEN Age BETWEEN 36 AND 42 THEN '36-42'
+      WHEN Age BETWEEN 43 AND 51 THEN '43-51'
+      ELSE 'Other' 
+      END AS age_bin
+  , case 
+      when State = 'CA' then 'California'
+      when State = 'IL' then 'Illinois'
+      when State = 'NY' then 'New York'
+      end as state_name
+  , salary
+  , CASE
+      WHEN Salary BETWEEN 20837 AND 50000 THEN 'Under 50K'
+      WHEN Salary BETWEEN 50001 AND 150000 THEN '50K-150K'
+      WHEN Salary BETWEEN 150001 AND 300000 THEN '150K-300K'
+      WHEN Salary BETWEEN 300001 AND 500000 THEN '300K-500K'
+      WHEN Salary > 500000 THEN 'Over 500K'
+      ELSE 'Unknown'
+      END AS salary_bin
+  , EL.EducationLevel as Education_Standard
+FROM 
+  `Data.EmployeeDataset` E
+    join `Data.EducationLevel` EL
+      on E.Education = EL.EducationLevelID
+;
+-- Performance Table Creation -- 
+
+-- Join Performance Ratings to Rating Level on RatingID, Satisfaction Level and Satisfaction ID and create table
+
+create table `Data.Table2` as 
+SELECT
+  PerformanceID
+  , EmployeeID
+  , ReviewDate
+  , E10.SatisfactionLevel as EnvironmentSatisfaction
+  , E9.SatisfactionLevel as JobSatisfaction
+  , E8.SatisfactionLevel as RelationshipSatisfaction
+  , TrainingOpportunitiesWithinYear
+  , TrainingOpportunitiesTaken
+  , WorkLifeBalance
+  , E3.RatingLevel as SelfRating
+  , E4.RatingLevel as ManagerRating
+FROM
+  `Data.PerformanceRating` E2
+    join `Data.RatingLevel` E3
+      on E2.SelfRating = E3.RatingID
+
+    join `Data.RatingLevel` E4
+      on E2.ManagerRating = E4.RatingID
+
+    join `Data.SatisfiedLevel` E8
+      on E2.RelationshipSatisfaction = E8.SatisfactionID
+
+    join `Data.SatisfiedLevel` E9
+      on E2.JobSatisfaction = E9.SatisfactionID
+
+    join `Data.SatisfiedLevel` E10
+      on E2.EnvironmentSatisfaction = E10.SatisfactionID
+;
+
+-- Identifying and deleting duplicate and  null values  -- 
+
+-- Null values in Table 1 
+
+select
+  *
+from
+  `Data.Table1`
+where
+  employeeid is null
+  or  Employee_Name is null
+  or Gender is null
+  or BusinessTravel is null
+  or Department is null
+  or `DistanceFromHome KM` is null
+  or Ethnicity is null
+  or Education is null
+  or EducationField is null
+  or JobRole is null
+  or MaritalStatus is null
+  or StockOptionLevel is null
+  or OverTime is null
+  or HireDate is null
+  or Attrition is null
+  or YearsAtCompany is null
+  or YearsInMostRecentRole is null
+  or YearsSinceLastPromotion is null
+  or YearsWithCurrManager is null
+  or age is null
+  or age_bin is null
+  or state_name is null
+  or salary_bin is null
+  or Education_Standard is null
+; -- none
+
+-- Duplicate values in Table 1 
+
+select
+  employeeid
+  , count(*) as total 
+from
+  `Data.Table1`
+group by
+  employeeid
+having
+  count(*) > 1 
+; -- by grouping shows if that employee_id is being counted more than once. none duplicated 
+
+-- Null values in Table 2
+
+select
+  *
+from
+  `Data.Table2`
+where
+  PerformanceID is null
+  or EmployeeID is null
+  or ReviewDate is null 
+; -- do not need other rows because joined and join would not show null values, none
+
+-- Duplicate values in Table 2
+
+select
+  performanceid
+  , count(*) as total 
+from
+  `Data.Table2`
+group by
+  performanceid -- same employee has multiple reviews so not counting on employeeid
+having
+  count(*) > 1 
+; -- none 
+
+
+
